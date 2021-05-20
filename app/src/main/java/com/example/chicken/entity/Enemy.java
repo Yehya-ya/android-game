@@ -1,6 +1,13 @@
 package com.example.chicken.entity;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Rect;
+
+import com.example.chicken.graphic.Animation;
+import com.example.chicken.graphic.Sprite;
+
+import static com.example.chicken.entity.Direction.*;
 
 public class Enemy {
 
@@ -97,7 +104,7 @@ public class Enemy {
         this.destination = d;
     }
 
-    private void setAnimation(int dir, BufferedImage[] spriteArray) {
+    private void setAnimation(int dir, Bitmap[] spriteArray) {
         currentAnimation = dir;
         ani.setFrame(spriteArray);
     }
@@ -189,7 +196,7 @@ public class Enemy {
         }
     }
 
-    public void rander(Graphics2D g) {
+    public void render(Canvas canvas) {
 
         if (hit) {
             x = 20;
@@ -200,9 +207,11 @@ public class Enemy {
         }
         int off = x / 2;
         if (currentAnimation == 1 || currentAnimation == 2) {
-            g.drawImage(ani.getImage(), bounds.x - bounds.width / 2 - off, (int) pos.y - bounds.height - x, bounds.width * 2 + off * 2, bounds.height * 2 + off * 2, null);
+            canvas.drawBitmap(ani.getImage(), null, bounds, null);
+            //g.drawImage(ani.getImage(), bounds.x - bounds.width / 2 - off, (int) pos.y - bounds.height - x, bounds.width * 2 + off * 2, bounds.height * 2 + off * 2, null);
         } else {
-            g.drawImage(ani.getImage(), bounds.x - bounds.width / 2 - off, (int) (bounds.y - bounds.height / 1.5) - x, bounds.width * 2 + off * 2, bounds.height * 2 + off * 2, null);
+            canvas.drawBitmap(ani.getImage(), null, bounds, null);
+            //g.drawImage(ani.getImage(), bounds.x - bounds.width / 2 - off, (int) (bounds.y - bounds.height / 1.5) - x, bounds.width * 2 + off * 2, bounds.height * 2 + off * 2, null);
         }
     }
 

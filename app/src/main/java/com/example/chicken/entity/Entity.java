@@ -1,20 +1,13 @@
 package com.example.chicken.entity;
 
+import android.graphics.Bitmap;
 import android.graphics.Rect;
 
-import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
+import com.example.chicken.graphic.Animation;
+import com.example.chicken.graphic.Sprite;
 
-import static my.game.Entity.Direction.*;
+import static com.example.chicken.entity.Direction.*;
 
-import my.game.GamePanel;
-import my.game.graphic.Animation;
-import my.game.graphic.Sprite;
-import my.game.inputs.Vector2f;
-
-/**
- * @author Yahya-YA
- */
 public class Entity {
 
     protected final Rect bounds;
@@ -43,7 +36,7 @@ public class Entity {
         this.dx = 0;
         this.acc = 1;
         this.de_acc = 0.5f;
-        bounds = new Rect((int) pos.x, (int) pos.y, width, height);
+        bounds = new Rect((int) pos.x, (int) pos.y, (int) pos.x + width, (int) pos.y + height);
 
         ani = new Animation();
         setAnimation(DOWN.ordinal(), sprite.getSpriteArray(DOWN.ordinal()), 6);
@@ -53,7 +46,7 @@ public class Entity {
         return bounds;
     }
 
-    private void setAnimation(int dir, BufferedImage[] spriteArray, int i) {
+    private void setAnimation(int dir, Bitmap[] spriteArray, int i) {
         currentAnimation = dir;
         ani.setFrame(spriteArray);
         ani.setDelay(i);
@@ -62,8 +55,8 @@ public class Entity {
     public void update() {
         animate();
         ani.update();
-        bounds.x = (int) pos.x;
-        bounds.y = (int) pos.y;
+        bounds.left = (int) pos.x;
+        bounds.top = (int) pos.y;
     }
 
     private void animate() {

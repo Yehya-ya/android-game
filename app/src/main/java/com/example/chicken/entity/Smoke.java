@@ -1,8 +1,12 @@
 package com.example.chicken.entity;
 
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+
+import com.example.chicken.graphic.Animation;
+import com.example.chicken.graphic.Sprite;
 
 public class Smoke {
 
@@ -16,13 +20,13 @@ public class Smoke {
         int h = 16 * s;
         int x = (int) (pos.x - w / 2);
         int y = (int) (pos.y - h / 2);
-        bounds = new Rect(x, y, w, h);
+        bounds = new Rect(x, y, x + w, y + h);
 
         ani = new Animation();
         setAnimation(sprite.getSpriteArray(0), 2);
     }
 
-    private void setAnimation(BufferedImage[] spriteArray, int i) {
+    private void setAnimation(Bitmap[] spriteArray, int i) {
         ani.setFrame(spriteArray);
         ani.setDelay(i);
     }
@@ -36,7 +40,7 @@ public class Smoke {
     }
 
     public void render(Canvas canvas) {
-        g.drawImage(ani.getImage(), bounds.x, bounds.y, bounds.width, bounds.height, null);
+        canvas.drawBitmap(ani.getImage(), null, bounds, null);
     }
 
     public boolean isFinished() {

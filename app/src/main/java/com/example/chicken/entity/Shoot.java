@@ -1,7 +1,11 @@
 package com.example.chicken.entity;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+
+import com.example.chicken.graphic.Animation;
+import com.example.chicken.graphic.Sprite;
 
 public class Shoot {
 
@@ -13,7 +17,7 @@ public class Shoot {
     public Shoot(Sprite sprite, Vector2f pos, Vector2f delta) {
         this.pos = pos;
         pos.x = pos.x - 16 / 2;
-        bounds = new Rect((int) pos.x, (int) pos.y, 16, 18);
+        bounds = new Rect((int) pos.x, (int) pos.y, (int) pos.x + 16, (int) pos.y + 18);
         this.delta = delta;
 
         ani = new Animation();
@@ -24,7 +28,7 @@ public class Shoot {
         return bounds;
     }
 
-    private void setAnimation(BufferedImage[] spriteArray, int i) {
+    private void setAnimation(Bitmap[] spriteArray, int i) {
         ani.setFrame(spriteArray);
         ani.setDelay(i);
     }
@@ -42,7 +46,7 @@ public class Shoot {
     }
 
     public void render(Canvas canvas) {
-        g.drawImage(ani.getImage(), bounds.x - 2, bounds.y - 2, bounds.width + 4, bounds.height + 4, null);
+        canvas.drawBitmap(ani.getImage(), null, this.bounds, null);
     }
 
     public boolean delete() {
