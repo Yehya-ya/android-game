@@ -1,8 +1,12 @@
 package com.example.chicken.entity;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 
-import java.io.IOException;
+import com.example.chicken.graphic.Sprite;
+
 import java.util.ArrayList;
 
 
@@ -13,8 +17,8 @@ public class Player extends Entity {
     private final int reviveDuration;
     private final Sprite eggSprite;
     private final int shoot_speed;
-    private BufferedImage image;
-    private BufferedImage icon;
+    private Bitmap image;
+    private Bitmap icon;
     private Sprite deathSprite;
     private int lives;
     private int score;
@@ -41,17 +45,16 @@ public class Player extends Entity {
         shoots = new ArrayList<>();
         this.image = null;
         try {
-            this.image = ImageIO.read(getClass().getClassLoader().getResourceAsStream("Image/heart.png"));
-        } catch (IOException e) {
-            System.out.println("clouds1 Loading....:: " + e);
+            this.image = BitmapFactory.decodeStream(getClass().getClassLoader().getResourceAsStream("res/drawable/heart.png"));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         this.icon = null;
         try {
-            this.icon = ImageIO.read(getClass().getClassLoader().getResourceAsStream("Image/icon.png"));
-        } catch (IOException e) {
-            System.out.println("clouds1 Loading....:: " + e);
+            this.icon = BitmapFactory.decodeStream(getClass().getClassLoader().getResourceAsStream("res/drawable/icon.png"));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
     }
 
     public ArrayList<Shoot> getShoots() {
@@ -71,30 +74,30 @@ public class Player extends Entity {
         move();
         Attack();
 
-        shoots.forEach((s) -> {
-            s.update();
-        });
+        for (Shoot shoot : shoots) {
+            shoot.update();
+        }
     }
 
     public void update_death() {
         ani.update();
     }
 
-    public void render(Canvas canvas) {
+    public void render(final Canvas canvas) {
         if (revive) {
             if (reviveCounter % 15 < 10) {
-                g.drawImage(ani.getImage(), bounds.x - bounds.width / 4, bounds.y - bounds.height / 4, (int) (bounds.width * 1.5), (int) (bounds.height * 1.5), null);
+                canvas.drawBitmap(ani.getImage(), null, bounds, null);
             }
             reviveCounter++;
             if (reviveCounter >= reviveDuration) {
                 revive = false;
             }
         } else {
-            g.drawImage(ani.getImage(), bounds.x - bounds.width / 4, bounds.y - bounds.height / 4, (int) (bounds.width * 1.5), (int) (bounds.height * 1.5), null);
+            canvas.drawBitmap(ani.getImage(), null, bounds, null);
         }
-        shoots.forEach((Shoot s) -> {
-            s.rander(g);
-        });
+        for (Shoot shoot : shoots) {
+            shoot.render(canvas);
+        }
 
         for (Shoot s : shoots) {
             if (s.delete()) {
@@ -102,15 +105,15 @@ public class Player extends Entity {
                 break;
             }
         }
-        g.drawImage(icon, 30, 5, 17 * 2, 27 * 2, null);
+        canvas.drawBitmap(icon, null, new Rect(30, 5, 30 + 17 * 2, 5 + 27 * 2), null);
         for (int i = 1; i <= lives; i++) {
-            g.drawImage(image, 60 + 28 * i, 20, 13 * 2, 12 * 2, null);
+            canvas.drawBitmap(image, null, new Rect(60 + 28 * i, 20, (60 + 28 * i) + 13 * 2, 20 + 12 * 2), null);
         }
 
     }
 
     public void render_death(Canvas canvas) {
-        g.drawImage(ani.getImage(), bounds.x - 16, bounds.y, 32 * 3, 32 * 2, null);
+        canvas.drawBitmap(ani.getImage(), null, bounds, null);
     }
 
     public boolean isKilled() {
@@ -179,13 +182,13 @@ public class Player extends Entity {
 
         if (pos.x <= 0) {
             pos.x = 0;
-        } else if (pos.x + bounds.width >= GamePanel.width) {
-            pos.x = GamePanel.width - bounds.width;
+        } else if (bounds.right >= GamePanel.width) {
+            pos.x = GamePanel.width - bounds.width();
         }
         if (pos.y <= 0) {
             pos.y = 0;
-        } else if (pos.y + bounds.height >= GamePanel.height) {
-            pos.y = GamePanel.height - bounds.height;
+        } else if (bounds.bottom >= GamePanel.height) {
+            pos.y = GamePanel.height - bounds.height();
         }
     }
 
@@ -200,7 +203,7 @@ public class Player extends Entity {
                     double deltax = Math.cos(angle) * shoot_speed;
                     double deltay = Math.sin(angle) * shoot_speed;
 
-                    shoots.add(new Shoot(eggSprite, new Vector2f(pos.x + bounds.width / 2, pos.y + bounds.height), new Vector2f((float) deltax, (float) deltay)));
+                    shoots.add(new Shoot(eggSprite, new Vector2f(pos.x + bounds.width() / 2, pos.y + bounds.height()), new Vector2f((float) deltax, (float) deltay)));
                 }
             }
             attackDuration++;
@@ -220,7 +223,7 @@ public class Player extends Entity {
             if (lives <= 0) {
                 this.killed = true;
             }
-            pos.x = GamePanel.width / 2 - bounds.width / 2;
+            pos.x = GamePanel.width / 2 - bounds.width() / 2;
             pos.y = 0;
             dy = maxSpeed;
             dx = 0;
