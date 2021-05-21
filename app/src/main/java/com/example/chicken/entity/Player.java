@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 
 import com.example.chicken.graphic.Sprite;
+import com.example.chicken.service.Vector2f;
 
 import java.util.ArrayList;
 
@@ -203,7 +204,7 @@ public class Player extends Entity {
                     double deltax = Math.cos(angle) * shoot_speed;
                     double deltay = Math.sin(angle) * shoot_speed;
 
-                    shoots.add(new Shoot(eggSprite, new Vector2f(pos.x + bounds.width() / 2, pos.y + bounds.height()), new Vector2f((float) deltax, (float) deltay)));
+                    shoots.add(new Shoot(eggSprite, new Vector2f(bounds.centerX(), bounds.bottom), new Vector2f((float) deltax, (float) deltay)));
                 }
             }
             attackDuration++;
@@ -223,7 +224,7 @@ public class Player extends Entity {
             if (lives <= 0) {
                 this.killed = true;
             }
-            pos.x = GamePanel.width / 2 - bounds.width() / 2;
+            pos.x = GamePanel.width / 2 - bounds.centerX();
             pos.y = 0;
             dy = maxSpeed;
             dx = 0;
@@ -235,7 +236,7 @@ public class Player extends Entity {
     }
 
     public void setDeathAnimation() {
-        deathSprite = new Sprite("move/chickendeath.png", 32, 32);
+        deathSprite = new Sprite("res/drawable/chickendeath.png", 32, 32);
         ani.setFrame(deathSprite.getSpriteArray(0));
         ani.setDelay(10);
         up = false;

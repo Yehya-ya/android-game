@@ -1,4 +1,4 @@
-package com.example.chicken.graphic;
+package com.example.chicken.ui;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

@@ -2,10 +2,13 @@ package com.example.chicken.gsm;
 
 
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Rect;
 
-/**
- * @author Yahya-YA
- */
+import com.example.chicken.ui.Button;
+import com.example.chicken.ui.Font;
+import com.example.chicken.graphic.Sprite;
+
 public class PauseState extends GameState {
 
     private final Button start;
@@ -15,7 +18,7 @@ public class PauseState extends GameState {
     private final int height;
     private final Sprite sprite;
     private final int delay;
-    private int foucs;
+    private int focus;
     private boolean click;
     private int counter;
 
@@ -23,7 +26,7 @@ public class PauseState extends GameState {
         super(gsm);
         this.delay = 3;
         this.counter = 0;
-        this.foucs = 1;
+        this.focus = 1;
         this.click = false;
         this.sprite = new Sprite("move/button.png", 190, 49);
         this.width = 900;
@@ -33,16 +36,16 @@ public class PauseState extends GameState {
         int y = (GamePanel.height / 2 - height / 2) + 100;
         int dy = GamePanel.height / 8;
 
-        resume = new Button(sprite, font, new Rectangle(x, y - dy * 2, this.width, this.height), "resume");
-        start = new Button(sprite, font, new Rectangle(x, y, this.width, this.height), "Back to Menu");
-        Exit = new Button(sprite, font, new Rectangle(x, y + dy * 2, this.width, this.height), "Exit");
+        resume = new Button(sprite, font, new Rect(x, y - dy * 2, x + this.width, y - dy * 2 + this.height), "resume");
+        start = new Button(sprite, font, new Rect(x, y, x + this.width, y + this.height), "Back to Menu");
+        Exit = new Button(sprite, font, new Rect(x, y + dy * 2, x + this.width, y + dy * 2 + this.height), "Exit");
     }
 
     @Override
     public void update() {
-        resume.setFoucsed(foucs == 1);
-        start.setFoucsed(foucs == 2);
-        Exit.setFoucsed(foucs == 3);
+        resume.setFocused(focus == 1);
+        start.setFocused(focus == 2);
+        Exit.setFocused(focus == 3);
 
         resume.update();
         start.update();
@@ -50,7 +53,7 @@ public class PauseState extends GameState {
 
         if (this.click) {
             counter++;
-            switch (foucs) {
+            switch (focus) {
                 case 1: {
                     resume.setCurrentFrame(counter / delay);
                     break;
@@ -65,7 +68,7 @@ public class PauseState extends GameState {
                 }
             }
             if (counter == 3 * delay) {
-                switch (foucs) {
+                switch (focus) {
                     case 1: {
                         gsm.resumePlayState();
                         break;
@@ -85,38 +88,38 @@ public class PauseState extends GameState {
         }
     }
 
-    private void nextfoucs() {
-        foucs++;
-        if (foucs > 3) {
-            foucs = 1;
+    private void nextFocus() {
+        focus++;
+        if (focus > 3) {
+            focus = 1;
         }
     }
 
-    private void previousfoucs() {
-        foucs--;
-        if (foucs < 1) {
-            foucs = 3;
+    private void previousFocus() {
+        focus--;
+        if (focus < 1) {
+            focus = 3;
         }
     }
 
     @Override
     public void input(KeyHandler keyH, MouseHandler mouseH) {
         if (keyH.down.clicked) {
-            this.nextfoucs();
+            this.nextFocus();
         }
         if (keyH.up.clicked) {
-            this.previousfoucs();
+            this.previousFocus();
         }
         if (keyH.enter.clicked) {
             this.click = true;
         }
 
         if (resume.contains(mouseH.getMouseX(), mouseH.getMouseY())) {
-            this.foucs = 1;
+            this.focus = 1;
         } else if (start.contains(mouseH.getMouseX(), mouseH.getMouseY())) {
-            this.foucs = 2;
+            this.focus = 2;
         } else if (Exit.contains(mouseH.getMouseX(), mouseH.getMouseY())) {
-            this.foucs = 3;
+            this.focus = 3;
         }
 
         if (mouseH.getMouseB() == 1) {
@@ -133,10 +136,9 @@ public class PauseState extends GameState {
 
     @Override
     public void render(Canvas canvas) {
-        canvas.setColor(new Color(0, 0, 0, 100));
-        canvas.fillRect(0, 0, GamePanel.width, GamePanel.height);
-        resume.render(g);
-        start.render(g);
-        Exit.render(g);
+        canvas.drawColor(Color.argb(100, 0, 0, 0));
+        resume.render(canvas);
+        start.render(canvas);
+        Exit.render(canvas);
     }
 }
