@@ -6,6 +6,7 @@ import android.graphics.Rect;
 
 import com.example.chicken.graphic.Animation;
 import com.example.chicken.graphic.Sprite;
+import com.example.chicken.service.Vector2f;
 
 public class Coin {
 
@@ -40,8 +41,7 @@ public class Coin {
     }
 
     private void move() {
-        bounds.x += acc.x;
-        bounds.y += acc.y;
+        bounds.offset((int) acc.x, (int) acc.y);
     }
 
     public void render(Canvas canvas) {

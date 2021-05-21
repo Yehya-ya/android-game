@@ -6,6 +6,7 @@ import android.graphics.Rect;
 
 import com.example.chicken.graphic.Animation;
 import com.example.chicken.graphic.Sprite;
+import com.example.chicken.service.Vector2f;
 
 import static com.example.chicken.entity.Direction.*;
 
@@ -48,7 +49,7 @@ public class Enemy {
         this.type = type;
         this.deg = 90;
         this.enemySpeed = 4 + 2 * level;
-        bounds = new Rect((int) pos.x, (int) pos.y, s, s);
+        bounds = new Rect((int) pos.x, (int) pos.y, (int) pos.x + s, (int) pos.y + s);
 
         introAnimation = true;
         ani = new Animation();
@@ -172,8 +173,7 @@ public class Enemy {
         } else {
             ani.setCurrentFrame(0);
         }
-        bounds.x = (int) pos.x;
-        bounds.y = (int) pos.y;
+        bounds.offset((int) pos.x, (int) pos.y);
     }
 
     private void introMove() {
@@ -220,8 +220,8 @@ public class Enemy {
         destination.y += newacc.y;
     }
 
-    public void attack(Rectangle r) {
-        Vector2f t = new Vector2f(r.x + r.width / 2 - pos.x, r.y - pos.y);
+    public void attack(Rect r) {
+        Vector2f t = new Vector2f(r.centerX(), r.centerY());
         t.Scale(10);
         destination.x = pos.x + t.x;
         destination.y = pos.y + t.y;

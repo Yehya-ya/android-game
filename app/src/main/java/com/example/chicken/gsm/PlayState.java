@@ -1,6 +1,14 @@
 package com.example.chicken.gsm;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Rect;
+
+import com.example.chicken.entity.Player;
+import com.example.chicken.ui.Font;
+import com.example.chicken.graphic.Sprite;
 
 public class PlayState extends GameState {
 
@@ -10,7 +18,7 @@ public class PlayState extends GameState {
     private final int w, h;
     private GameState p;
     private boolean paused;
-    private BufferedImage clouds1, clouds2, clouds3;
+    private Bitmap clouds1, clouds2, clouds3;
     private int c1, c2, c3;
     private int counter;
     private boolean finished;
@@ -27,29 +35,29 @@ public class PlayState extends GameState {
         this.finished = false;
         this.paused = false;
         this.font = font;
-        this.enemySprite = new Sprite("move/cat.png", 32, 32);
+        this.enemySprite = new Sprite("res/drawable/cat.png", 32, 32);
         this.clouds1 = null;
         try {
-            this.clouds1 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("move/clouds1.png"));
-        } catch (IOException e) {
-            System.out.println("clouds1 Loading....:: " + e);
+            this.clouds1 = BitmapFactory.decodeStream(getClass().getClassLoader().getResourceAsStream("res/drawable/clouds1.png"));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         this.clouds2 = null;
         try {
-            this.clouds2 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("move/clouds2.png"));
-        } catch (IOException e) {
-            System.out.println("clouds2 Loading....:: " + e);
+            this.clouds2 = BitmapFactory.decodeStream(getClass().getClassLoader().getResourceAsStream("res/drawable/clouds2.png"));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         this.clouds3 = null;
         try {
-            this.clouds3 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("move/clouds3.png"));
-        } catch (IOException e) {
-            System.out.println("clouds3 Loading....:: " + e);
+            this.clouds3 = BitmapFactory.decodeStream(getClass().getClassLoader().getResourceAsStream("res/drawable/clouds3.png"));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        player = new Player(new Sprite("move/chicken.png", w, h), new Sprite("move/egg.png", 9, 10), (int) (w * 2 / 1.5), (int) (h * 2 / 1.5));
+        player = new Player(new Sprite("res/drawable/chicken.png", w, h), new Sprite("res/drawable/egg.png", 9, 10), (int) (w * 2 / 1.5), (int) (h * 2 / 1.5));
         lsm = new LevelStateManager(enemySprite, player, font);
     }
 
@@ -63,31 +71,31 @@ public class PlayState extends GameState {
         this.w = 63;
         this.finished = false;
         this.paused = false;
-        this.enemySprite = new Sprite("move/cat.png", 32, 32);
+        this.enemySprite = new Sprite("res/drawable/cat.png", 32, 32);
         this.font = font;
 
         this.clouds1 = null;
         try {
-            this.clouds1 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("move/clouds1.png"));
-        } catch (IOException e) {
-            System.out.println("clouds1 Loading....:: " + e);
+            this.clouds1 = BitmapFactory.decodeStream(getClass().getClassLoader().getResourceAsStream("res/drawable/clouds1.png"));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         this.clouds2 = null;
         try {
-            this.clouds2 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("move/clouds2.png"));
-        } catch (IOException e) {
-            System.out.println("clouds2 Loading....:: " + e);
+            this.clouds2 = BitmapFactory.decodeStream(getClass().getClassLoader().getResourceAsStream("res/drawable/clouds2.png"));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         this.clouds3 = null;
         try {
-            this.clouds3 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("move/clouds3.png"));
-        } catch (IOException e) {
-            System.out.println("clouds3 Loading....:: " + e);
+            this.clouds3 = BitmapFactory.decodeStream(getClass().getClassLoader().getResourceAsStream("res/drawable/clouds3.png"));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        player = new Player(new Sprite("move/chicken.png", w, h), new Sprite("move/egg.png", 9, 10), (int) (w * 2 / 1.5), (int) (h * 2 / 1.5));
+        player = new Player(new Sprite("res/drawable/chicken.png", w, h), new Sprite("res/drawable/egg.png", 9, 10), (int) (w * 2 / 1.5), (int) (h * 2 / 1.5));
         lsm = new LevelStateManager(enemySprite, player, level, type, font);
     }
 
@@ -147,22 +155,21 @@ public class PlayState extends GameState {
 
     @Override
     public void render(Canvas canvas) {
-        g.drawImage(clouds1, 0, -c1, GamePanel.width, GamePanel.height * 2, null);
-        g.drawImage(clouds2, 0, -c2, GamePanel.width, GamePanel.height * 2, null);
-        g.drawImage(clouds3, 0, -c3, GamePanel.width, GamePanel.height * 2, null);
+        canvas.drawBitmap(clouds1, null, new Rect(0, -c1, GamePanel.width, GamePanel.height * 2 - c1), null);
+        canvas.drawBitmap(clouds2, null, new Rect(0, -c2, GamePanel.width, GamePanel.height * 2 - c2), null);
+        canvas.drawBitmap(clouds3, null, new Rect(0, -c3, GamePanel.width, GamePanel.height * 2 - c3), null);
+
         if (!this.finished) {
-            player.render(g);
-            lsm.render(g);
+            player.render(canvas);
+            lsm.render(canvas);
         } else {
             if (player.isKilled()) {
-
-                g.setColor(new Color(10, 10, 10, 255 * counter / (60 * 6)));
-                g.fillRect(0, 0, GamePanel.width, GamePanel.height);
-                player.rander_death(g);
-                font.drawString(g, "Game Over", GamePanel.width / 2, GamePanel.height * 2 / 3, 60, counter / 6);
+                canvas.drawColor(Color.argb(255 * counter / (60 * 6), 10, 10, 10));
+                player.render_death(canvas);
+                font.drawString(canvas, "Game Over", GamePanel.width / 2, GamePanel.height * 2 / 3, 60, counter / 6);
             } else {
-                player.render(g);
-                font.drawString(g, "mission completed", GamePanel.width / 2, GamePanel.height / 3 - 100 + counter, 60, -10.0f + 20.0f * counter / (60.0f * 6.0f));
+                player.render(canvas);
+                font.drawString(canvas, "mission completed", GamePanel.width / 2, GamePanel.height / 3 - 100 + counter, 60, -10.0f + 20.0f * counter / (60.0f * 6.0f));
             }
         }
     }

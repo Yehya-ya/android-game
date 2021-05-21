@@ -6,6 +6,7 @@ import android.graphics.Rect;
 
 import com.example.chicken.graphic.Animation;
 import com.example.chicken.graphic.Sprite;
+import com.example.chicken.service.Vector2f;
 
 public class Shoot {
 
@@ -35,8 +36,7 @@ public class Shoot {
 
     public void update() {
         ani.update();
-        bounds.x = (int) pos.x;
-        bounds.y = (int) pos.y;
+        bounds.offset((int) pos.x, (int) pos.y);
         move();
     }
 

@@ -3,9 +3,6 @@ package com.example.chicken.gsm;
 
 import android.graphics.Canvas;
 
-/**
- * @author Yahya-YA
- */
 public abstract class GameState {
 
     final GameStatesManager gsm;
