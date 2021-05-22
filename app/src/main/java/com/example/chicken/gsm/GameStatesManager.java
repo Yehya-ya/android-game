@@ -3,6 +3,7 @@ package com.example.chicken.gsm;
 
 import android.graphics.Canvas;
 
+import com.example.chicken.level.Type;
 import com.example.chicken.ui.Font;
 
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ public class GameStatesManager {
         }
     }
 
-    public void setlevel() {
+    public void setLevel() {
         for (GameState s : states) {
             if (s.getClass() == PlayState.class) {
                 PlayState temp = (PlayState) s;

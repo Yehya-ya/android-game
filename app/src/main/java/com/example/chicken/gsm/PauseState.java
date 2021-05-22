@@ -74,7 +74,7 @@ public class PauseState extends GameState {
                         break;
                     }
                     case 2: {
-                        gsm.setlevel();
+                        gsm.setLevel();
                         gsm.clear();
                         gsm.add(State.Menu);
                         break;

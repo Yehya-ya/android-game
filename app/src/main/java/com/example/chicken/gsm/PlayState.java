@@ -7,6 +7,8 @@ import android.graphics.Color;
 import android.graphics.Rect;
 
 import com.example.chicken.entity.Player;
+import com.example.chicken.level.LevelStateManager;
+import com.example.chicken.level.Type;
 import com.example.chicken.ui.Font;
 import com.example.chicken.graphic.Sprite;
 
@@ -105,7 +107,7 @@ public class PlayState extends GameState {
             if (!paused) {
                 player.update();
                 lsm.update();
-                if (lsm.isFinieshed()) {
+                if (lsm.isFinished()) {
                     this.finished = true;
                     player.setDeathAnimation();
                 }
@@ -118,7 +120,7 @@ public class PlayState extends GameState {
             }
             counter++;
             if (counter > 60 * 6) {
-                gsm.setlevel();
+                gsm.setLevel();
                 gsm.clear();
                 gsm.add(State.Menu);
             }
