@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
+import com.example.chicken.MainLayout;
 import com.example.chicken.graphic.Sprite;
 import com.example.chicken.service.Vector2f;
 
@@ -20,7 +21,6 @@ public class Player extends Entity {
     private final int shoot_speed;
     private Bitmap image;
     private Bitmap icon;
-    private Sprite deathSprite;
     private int lives;
     private int score;
     private int reviveCounter;
@@ -60,14 +60,6 @@ public class Player extends Entity {
 
     public ArrayList<Shoot> getShoots() {
         return shoots;
-    }
-
-    public void input(KeyHandler keyH, MouseHandler mouseH) {
-        up = keyH.up.down;
-        down = keyH.down.down;
-        left = keyH.left.down;
-        right = keyH.right.down;
-        attack = keyH.shoot.down;
     }
 
     public void update() {
@@ -183,13 +175,13 @@ public class Player extends Entity {
 
         if (pos.x <= 0) {
             pos.x = 0;
-        } else if (bounds.right >= GamePanel.width) {
-            pos.x = GamePanel.width - bounds.width();
+        } else if (bounds.right >= MainLayout.width) {
+            pos.x = MainLayout.width - bounds.width();
         }
         if (pos.y <= 0) {
             pos.y = 0;
-        } else if (bounds.bottom >= GamePanel.height) {
-            pos.y = GamePanel.height - bounds.height();
+        } else if (bounds.bottom >= MainLayout.height) {
+            pos.y = MainLayout.height - bounds.height();
         }
     }
 
@@ -224,7 +216,7 @@ public class Player extends Entity {
             if (lives <= 0) {
                 this.killed = true;
             }
-            pos.x = GamePanel.width / 2 - bounds.centerX();
+            pos.x = MainLayout.width / 2.0f - bounds.centerX();
             pos.y = 0;
             dy = maxSpeed;
             dx = 0;
@@ -236,7 +228,7 @@ public class Player extends Entity {
     }
 
     public void setDeathAnimation() {
-        deathSprite = new Sprite("res/drawable/chickendeath.png", 32, 32);
+        Sprite deathSprite = new Sprite("res/drawable/chickendeath.png", 32, 32);
         ani.setFrame(deathSprite.getSpriteArray(0));
         ani.setDelay(10);
         up = false;

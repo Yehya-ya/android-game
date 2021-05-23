@@ -16,12 +16,18 @@ public class MainLayout extends SurfaceView implements Runnable {
     Bitmap image;
     SurfaceHolder surfaceHolder;
     GameStatesManager gsm;
+    static public int width;
+    static public int height;
 
     public MainLayout(Context context) {
         super(context);
         surfaceHolder = getHolder();
         image = BitmapFactory.decodeResource(getResources(), R.drawable.background1);
         gsm = new GameStatesManager();
+        Canvas canvas = surfaceHolder.lockCanvas();
+        width = canvas.getWidth();
+        height = canvas.getHeight();
+        surfaceHolder.unlockCanvasAndPost(canvas);
     }
 
     @Override
@@ -61,6 +67,10 @@ public class MainLayout extends SurfaceView implements Runnable {
 
     public void Resume() {
         canDraw = true;
+        Canvas canvas = surfaceHolder.lockCanvas();
+        width = canvas.getWidth();
+        height = canvas.getHeight();
+        surfaceHolder.unlockCanvasAndPost(canvas);
         thread = new Thread(this);
         thread.start();
     }

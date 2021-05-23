@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
+import com.example.chicken.MainLayout;
 import com.example.chicken.graphic.Animation;
 import com.example.chicken.graphic.Sprite;
 import com.example.chicken.level.Type;
@@ -31,10 +32,6 @@ public class Enemy {
     private Vector2f delta;
     private Vector2f destination;
     private Vector2f temp;
-    private boolean up;
-    private boolean down;
-    private boolean left;
-    private boolean right;
     private boolean hit;
     private int x;
 
@@ -58,7 +55,7 @@ public class Enemy {
         ani.setDelay(10);
     }
 
-    public Rect getBouns() {
+    public Rect getBounds() {
         return bounds;
     }
 
@@ -79,7 +76,7 @@ public class Enemy {
     }
 
     public void setDestination(Vector2f d, int s, float b) {
-        this.r = (GamePanel.height - d.y) / 2 - 30 * s;
+        this.r = (MainLayout.height - d.y) / 2 - 30 * s;
         this.c.y = d.y + this.r;
         this.c.x = d.x;
 
@@ -134,10 +131,10 @@ public class Enemy {
 
         introMove();
 
-        this.up = false;
-        this.down = false;
-        this.left = false;
-        this.right = false;
+        boolean up = false;
+        boolean down = false;
+        boolean left = false;
+        boolean right = false;
 
         if (temp.x != 0 || temp.y != 0) {
             if (Math.abs(temp.x) >= Math.abs(temp.y)) {

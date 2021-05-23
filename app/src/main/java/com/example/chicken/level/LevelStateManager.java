@@ -2,6 +2,7 @@ package com.example.chicken.level;
 
 import android.graphics.Canvas;
 
+import com.example.chicken.MainLayout;
 import com.example.chicken.entity.Player;
 import com.example.chicken.graphic.Sprite;
 import com.example.chicken.ui.Font;
@@ -62,7 +63,7 @@ public class LevelStateManager {
 
     public void render(Canvas canvas) {
         if (this.intro) {
-            this.font.drawString(g, "Level " + level.getLevel(), GamePanel.width / 2 - 100 + (int) (200.0 * (intro_counter / (60.0 * 3.0))), GamePanel.height / 2, 80, 10);
+            this.font.drawString(canvas, "Level " + level.getLevel(), MainLayout.width / 2 - 100 + (int) (200.0 * (intro_counter / (60.0 * 3.0))), MainLayout.height / 2, 80, 10);
         } else {
             this.level.render(canvas);
         }
@@ -70,9 +71,12 @@ public class LevelStateManager {
         String s = "" + player.getScore();
 
         String temp = "0";
-        temp = temp.repeat(10 - s.length());
 
-        font.drawString(g, "score:  " + temp + s, GamePanel.width - 200, 20, 20, 0);
+        for (int i = 1; i < 10 - s.length(); i++) {
+            temp += "0";
+        }
+
+        font.drawString(canvas, "score:  " + temp + s, MainLayout.width - 200, 20, 20, 0);
 
     }
 

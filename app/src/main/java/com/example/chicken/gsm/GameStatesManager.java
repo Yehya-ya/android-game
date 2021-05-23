@@ -75,12 +75,6 @@ public class GameStatesManager {
         }
     }
 
-    public void input(KeyHandler keyH, MouseHandler mouseH) {
-        for (int i = 0; i < states.size(); i++) {
-            states.get(i).input(keyH, mouseH);
-        }
-    }
-
     public void render(Canvas canvas) {
         for (int i = 0; i < states.size(); i++) {
             states.get(i).render(canvas);
