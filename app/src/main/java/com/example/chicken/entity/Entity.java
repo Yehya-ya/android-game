@@ -3,6 +3,7 @@ package com.example.chicken.entity;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 
+import com.example.chicken.MainLayout;
 import com.example.chicken.graphic.Animation;
 import com.example.chicken.graphic.Sprite;
 import com.example.chicken.service.Vector2f;
@@ -32,7 +33,7 @@ public class Entity {
     public Entity(Sprite sprite, int width, int height) {
         this.maxSpeed = 8;
         this.sprite = sprite;
-        this.pos = new Vector2f(GamePanel.width / 2 - width / 2, 0);
+        this.pos = new Vector2f(MainLayout.width / 2.0f - width / 2.0f, 0);
         this.dy = maxSpeed * 2;
         this.dx = 0;
         this.acc = 1;
@@ -43,7 +44,7 @@ public class Entity {
         setAnimation(DOWN.ordinal(), sprite.getSpriteArray(DOWN.ordinal()), 6);
     }
 
-    public Rect getBouns() {
+    public Rect getBounds() {
         return bounds;
     }
 

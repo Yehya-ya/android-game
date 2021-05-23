@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
+import com.example.chicken.MainLayout;
 import com.example.chicken.graphic.Animation;
 import com.example.chicken.graphic.Sprite;
 import com.example.chicken.service.Vector2f;
@@ -25,7 +26,7 @@ public class Shoot {
         setAnimation(sprite.getSpriteArray(0), 5);
     }
 
-    public Rect getBouns() {
+    public Rect getBounds() {
         return bounds;
     }
 
@@ -50,6 +51,6 @@ public class Shoot {
     }
 
     public boolean delete() {
-        return pos.y >= GamePanel.width;
+        return pos.y >= MainLayout.width;
     }
 }

@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
 
+import com.example.chicken.MainLayout;
 import com.example.chicken.entity.Player;
 import com.example.chicken.level.LevelStateManager;
 import com.example.chicken.level.Type;
@@ -128,38 +129,22 @@ public class PlayState extends GameState {
         c1++;
         c2 += 2;
         c3 += 3;
-        if (c1 >= GamePanel.height) {
+        if (c1 >= MainLayout.height) {
             c1 = 0;
         }
-        if (c2 >= GamePanel.height) {
+        if (c2 >= MainLayout.height) {
             c2 = 0;
         }
-        if (c3 >= GamePanel.height) {
+        if (c3 >= MainLayout.height) {
             c3 = 0;
         }
     }
 
     @Override
-    public void input(KeyHandler keyH, MouseHandler mouseH) {
-        if (!paused) {
-            player.input(keyH, mouseH);
-        }
-
-        if (keyH.escape.clicked) {
-            if (paused) {
-                gsm.pop(p);
-            } else {
-                p = gsm.add(State.Pause);
-            }
-            paused = !paused;
-        }
-    }
-
-    @Override
     public void render(Canvas canvas) {
-        canvas.drawBitmap(clouds1, null, new Rect(0, -c1, GamePanel.width, GamePanel.height * 2 - c1), null);
-        canvas.drawBitmap(clouds2, null, new Rect(0, -c2, GamePanel.width, GamePanel.height * 2 - c2), null);
-        canvas.drawBitmap(clouds3, null, new Rect(0, -c3, GamePanel.width, GamePanel.height * 2 - c3), null);
+        canvas.drawBitmap(clouds1, null, new Rect(0, -c1, MainLayout.width, MainLayout.height * 2 - c1), null);
+        canvas.drawBitmap(clouds2, null, new Rect(0, -c2, MainLayout.width, MainLayout.height * 2 - c2), null);
+        canvas.drawBitmap(clouds3, null, new Rect(0, -c3, MainLayout.width, MainLayout.height * 2 - c3), null);
 
         if (!this.finished) {
             player.render(canvas);
@@ -168,10 +153,10 @@ public class PlayState extends GameState {
             if (player.isKilled()) {
                 canvas.drawColor(Color.argb(255 * counter / (60 * 6), 10, 10, 10));
                 player.render_death(canvas);
-                font.drawString(canvas, "Game Over", GamePanel.width / 2, GamePanel.height * 2 / 3, 60, counter / 6);
+                font.drawString(canvas, "Game Over", MainLayout.width / 2, MainLayout.height * 2 / 3, 60, counter / 6.0f);
             } else {
                 player.render(canvas);
-                font.drawString(canvas, "mission completed", GamePanel.width / 2, GamePanel.height / 3 - 100 + counter, 60, -10.0f + 20.0f * counter / (60.0f * 6.0f));
+                font.drawString(canvas, "mission completed", MainLayout.width / 2, MainLayout.height / 3 - 100 + counter, 60, -10.0f + 20.0f * counter / (60.0f * 6.0f));
             }
         }
     }

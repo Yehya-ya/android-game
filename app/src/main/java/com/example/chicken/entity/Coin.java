@@ -26,7 +26,7 @@ public class Coin {
         setAnimation(sprite.getSpriteArray(0), 5);
     }
 
-    public Rect getBouns() {
+    public Rect getBounds() {
         return bounds;
     }
 

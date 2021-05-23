@@ -3,6 +3,7 @@ package com.example.chicken.level;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
+import com.example.chicken.MainLayout;
 import com.example.chicken.entity.Coin;
 import com.example.chicken.entity.Enemy;
 import com.example.chicken.entity.Player;
@@ -81,7 +82,7 @@ class Stage {
                 break;
             }
             default:
-                ;
+
         }
     }
 
@@ -116,7 +117,7 @@ class Stage {
                 break;
             }
             default:
-                ;
+
         }
 
     }
@@ -151,7 +152,6 @@ class Stage {
                     break;
                 }
                 default:
-                    ;
             }
         }
         for (Enemy enemy : this.enemies) {
@@ -212,17 +212,17 @@ class Stage {
 
         for (Enemy enemy : this.attacked_enemies) {
 
-            if (enemy.getBouns().bottom < 0 || enemy.getBouns().top > GamePanel.height) {
+            if (enemy.getBounds().bottom < 0 || enemy.getBounds().top > MainLayout.height) {
                 this.attacked_enemies.remove(enemy);
                 break;
-            } else if (enemy.getBouns().right < 0 || enemy.getBouns().left > GamePanel.width) {
+            } else if (enemy.getBounds().right < 0 || enemy.getBounds().left > MainLayout.width) {
                 this.attacked_enemies.remove(enemy);
                 break;
             }
         }
 
         for (Coin coin : this.coins) {
-            if (player.getBouns().intersect(coin.getBouns())) {
+            if (player.getBounds().intersect(coin.getBounds())) {
                 this.coins.remove(coin);
                 player.Score(100);
                 break;
@@ -239,9 +239,9 @@ class Stage {
         A:
         for (Shoot shoot : shoots) {
             for (Enemy enemy : this.enemies) {
-                if (shoot.getBouns().intersect(enemy.getBouns())) {
+                if (shoot.getBounds().intersect(enemy.getBounds())) {
                     if (enemy.hit()) {
-                        Rect enemy_bouns = enemy.getBouns();
+                        Rect enemy_bouns = enemy.getBounds();
                         if (random() < 0.05 * (enemy.getJ() + 1)) {
                             Coin temp = new Coin(this.coinSprite, new Vector2f(enemy_bouns.centerX(), enemy_bouns.centerY()), new Vector2f(0, -1));
                             this.coins.add(temp);
@@ -261,33 +261,33 @@ class Stage {
         A:
         for (Shoot shoot : shoots) {
             for (Enemy enemy : this.attacked_enemies) {
-                if (shoot.getBouns().intersect(enemy.getBouns())) {
+                if (shoot.getBounds().intersect(enemy.getBounds())) {
                     if (enemy.hit()) {
-                        Rect enemy_bouns = enemy.getBouns();
+                        Rect enemy_bouns = enemy.getBounds();
                         if (random() < 0.05 * (enemy.getJ() + 1)) {
                             Coin temp_coin = new Coin(this.coinSprite, new Vector2f(enemy_bouns.centerX(), enemy_bouns.centerY()), new Vector2f(0, -1));
                             this.coins.add(temp_coin);
                         }
                         Smoke t = new Smoke(this.smokeSprite, new Vector2f(enemy_bouns.centerX(), enemy_bouns.centerY()), enemy.getJ());
                         this.smokes.add(t);
-                        player.Score(enemy.getBouns().width() * 2);
+                        player.Score(enemy.getBounds().width() * 2);
                         this.attacked_enemies.remove(enemy);
                     }
                     enemy.setHit(true);
-                    shoots.remove(enemy);
+                    shoots.remove(shoot);
                     break A;
                 }
             }
         }
 
         for (Enemy enemy : this.enemies) {
-            if (enemy.getBouns().intersect(player.getBouns())) {
+            if (enemy.getBounds().intersect(player.getBounds())) {
                 player.Kill();
             }
         }
 
         for (Enemy enemy : this.attacked_enemies) {
-            if (enemy.getBouns().intersect(player.getBouns())) {
+            if (enemy.getBounds().intersect(player.getBounds())) {
                 player.Kill();
             }
         }
@@ -320,9 +320,7 @@ class Stage {
 
         if (this.counter == 60) {
             this.enemies.addAll(this.intro_enemies.subList(0, 3));
-            for (int i = 0; i < 3; i++) {
-                this.intro_enemies.remove(0);
-            }
+            this.intro_enemies.subList(0, 3).clear();
             this.loop += 3;
             this.counter = 0;
             if (this.loop >= this.enemy_num) {
@@ -369,19 +367,19 @@ class Stage {
 
     private void setRowStage() {
         int enemyNumRow = this.enemy_num / 3;
-        int distance = (GamePanel.width / (enemyNumRow + 3));
+        int distance = (MainLayout.width / (enemyNumRow + 3));
 
         for (int j = 1; j <= 3; j++) {
             for (int i = 0; i < enemyNumRow; i++) {
                 Enemy temp_enemy;
                 if (j % 2 == 0) {
-                    temp_enemy = new Enemy(this.sprite, new Vector2f(GamePanel.width, GamePanel.height / 2), 64 - 8 * j, this.type, 4 - j, this.level);
+                    temp_enemy = new Enemy(this.sprite, new Vector2f(MainLayout.width, MainLayout.height / 2.0f), 64 - 8 * j, this.type, 4 - j, this.level);
                 } else {
-                    temp_enemy = new Enemy(this.sprite, new Vector2f(0 - 31, GamePanel.height / 2), 64 - 8 * j, this.type, 4 - j, this.level);
+                    temp_enemy = new Enemy(this.sprite, new Vector2f(-31, MainLayout.height / 2.0f), 64 - 8 * j, this.type, 4 - j, this.level);
                 }
 
                 int x = (i + 2) * distance;
-                int y = (GamePanel.height - GamePanel.height * j / 6);
+                int y = (MainLayout.height - MainLayout.height * j / 6);
 
                 temp_enemy.setDelta(new Vector2f(0, -1));
                 temp_enemy.setDestination(new Vector2f(x, y));
@@ -394,22 +392,22 @@ class Stage {
 
     private void setColumnStage() {
         int enemyNumRow = this.enemy_num / 3;
-        int distance = (GamePanel.width / (enemyNumRow + 3));
+        int distance = (MainLayout.width / (enemyNumRow + 3));
 
         for (int i = 0; i < enemyNumRow; i++) {
             for (int j = 1; j <= 3; j++) {
 
                 Enemy temp_enemy;
                 if (i < enemyNumRow / 2) {
-                    temp_enemy = new Enemy(this.sprite, new Vector2f(-30, GamePanel.height), 64 - 8 * j, this.type, 4 - j, this.level);
+                    temp_enemy = new Enemy(this.sprite, new Vector2f(-30, MainLayout.height), 64 - 8 * j, this.type, 4 - j, this.level);
                     temp_enemy.setDelta(new Vector2f(1, 3));
                 } else {
-                    temp_enemy = new Enemy(this.sprite, new Vector2f(GamePanel.width, GamePanel.height), 64 - 8 * j, this.type, 4 - j, this.level);
+                    temp_enemy = new Enemy(this.sprite, new Vector2f(MainLayout.width, MainLayout.height), 64 - 8 * j, this.type, 4 - j, this.level);
                     temp_enemy.setDelta(new Vector2f(-1, 3));
 
                 }
                 int x = (i + 2) * distance;
-                int y = (GamePanel.height - GamePanel.height * j / 6);
+                int y = (MainLayout.height - MainLayout.height * j / 6);
 
                 temp_enemy.setDestination(new Vector2f(x, y));
 
@@ -425,14 +423,14 @@ class Stage {
             for (int i = 0; i < enemyNumRow; i++) {
                 Enemy temp_enemy;
                 if (j % 2 == 0) {
-                    temp_enemy = new Enemy(this.sprite, new Vector2f(GamePanel.width / 3, GamePanel.height), 64 - 8 * j, this.type, 4 - j, this.level);
+                    temp_enemy = new Enemy(this.sprite, new Vector2f(MainLayout.width / 3.0f, MainLayout.height), 64 - 8 * j, this.type, 4 - j, this.level);
                     temp_enemy.setDelta(new Vector2f(-3, 1));
                 } else {
-                    temp_enemy = new Enemy(this.sprite, new Vector2f(GamePanel.width * 2 / 3, GamePanel.height), 62 - 8 * j, this.type, 4 - j, this.level);
+                    temp_enemy = new Enemy(this.sprite, new Vector2f(MainLayout.width * 2 / 3.0f, MainLayout.height), 62 - 8 * j, this.type, 4 - j, this.level);
                     temp_enemy.setDelta(new Vector2f(3, 1));
                 }
                 float b = 360.0f / (20.0f * enemyNumRow);
-                temp_enemy.setDestination(new Vector2f(GamePanel.width / 2, GamePanel.height / 4 + (j * 90)), j, b);
+                temp_enemy.setDestination(new Vector2f(MainLayout.width / 2.0f, MainLayout.height / 4.0f + (j * 90)), j, b);
 
                 this.intro_enemies.add(temp_enemy);
             }
@@ -445,17 +443,17 @@ class Stage {
         for (int j = 0; j < enemyNumRow; j++) {
             Enemy temp_enemy;
             Random random = new Random();
-            int randomInteger = GamePanel.height / 4 - 60 + random.nextInt((GamePanel.height * 3 / 4));
+            int randomInteger = MainLayout.height / 4 - 60 + random.nextInt((MainLayout.height * 3 / 4));
             if (random.nextDouble() < 0.5) {
                 for (int i = 0; i < 3; i++) {
-                    temp_enemy = new Enemy(this.sprite, new Vector2f(GamePanel.width, randomInteger), 64 - 16, this.type, i + 1, this.level);
+                    temp_enemy = new Enemy(this.sprite, new Vector2f(MainLayout.width, randomInteger), 64 - 16, this.type, i + 1, this.level);
                     temp_enemy.setDestination(new Vector2f(-40, randomInteger));
                     this.intro_enemies.add(temp_enemy);
                 }
             } else {
                 for (int i = 0; i < 3; i++) {
                     temp_enemy = new Enemy(this.sprite, new Vector2f(-31, randomInteger), 64 - 16, this.type, i + 1, this.level);
-                    temp_enemy.setDestination(new Vector2f(GamePanel.width + 10, randomInteger));
+                    temp_enemy.setDestination(new Vector2f(MainLayout.width + 10, randomInteger));
                     this.intro_enemies.add(temp_enemy);
                 }
             }
@@ -470,7 +468,7 @@ class Stage {
         for (Enemy e : this.enemies) {
             if (random() < 0.001 * this.level) {
 
-                e.attack(player.getBouns());
+                e.attack(player.getBounds());
                 this.attacked_enemies.add(e);
                 this.enemies.remove(e);
                 break;

@@ -3,6 +3,7 @@ package com.example.chicken.level;
 
 import android.graphics.Canvas;
 
+import com.example.chicken.MainLayout;
 import com.example.chicken.entity.Player;
 import com.example.chicken.graphic.Sprite;
 import com.example.chicken.ui.Font;
@@ -93,7 +94,7 @@ public class Level {
         stages.render(canvas);
         if (intro && intro_counter < 60 * 4) {
 
-            font.drawString(g, "Wave " + (type.ordinal() + 1), GamePanel.width / 2 - 50 + (int) ((100.0f * intro_counter / (60.0f * 4.0f))), GamePanel.height / 2, 60, 5);
+            font.drawString(canvas, "Wave " + (type.ordinal() + 1), MainLayout.width / 2 - 50 + (int) ((100.0f * intro_counter / (60.0f * 4.0f))), MainLayout.height / 2, 60, 5);
         }
     }
 

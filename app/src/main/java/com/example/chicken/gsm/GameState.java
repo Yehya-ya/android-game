@@ -13,8 +13,6 @@ public abstract class GameState {
 
     abstract void update();
 
-    abstract void input(KeyHandler keyH, MouseHandler mouseH);
-
     abstract void render(Canvas canvas);
 
 }
