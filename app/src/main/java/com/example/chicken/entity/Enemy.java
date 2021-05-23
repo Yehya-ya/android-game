@@ -6,6 +6,7 @@ import android.graphics.Rect;
 
 import com.example.chicken.graphic.Animation;
 import com.example.chicken.graphic.Sprite;
+import com.example.chicken.level.Type;
 import com.example.chicken.service.Vector2f;
 
 import static com.example.chicken.entity.Direction.*;
