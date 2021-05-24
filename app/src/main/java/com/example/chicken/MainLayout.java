@@ -13,21 +13,17 @@ import com.example.chicken.gsm.GameStatesManager;
 public class MainLayout extends SurfaceView implements Runnable {
     boolean canDraw;
     Thread thread;
-    Bitmap image;
     SurfaceHolder surfaceHolder;
     GameStatesManager gsm;
     static public int width;
     static public int height;
 
-    public MainLayout(Context context) {
+    public MainLayout(Context context, int width, int height) {
         super(context);
         surfaceHolder = getHolder();
-        image = BitmapFactory.decodeResource(getResources(), R.drawable.background1);
+        MainLayout.width = width;
+        MainLayout.height = height;
         gsm = new GameStatesManager();
-        Canvas canvas = surfaceHolder.lockCanvas();
-        width = canvas.getWidth();
-        height = canvas.getHeight();
-        surfaceHolder.unlockCanvasAndPost(canvas);
     }
 
     @Override
@@ -48,7 +44,6 @@ public class MainLayout extends SurfaceView implements Runnable {
     }
 
     private void render(Canvas canvas) {
-        canvas.drawBitmap(image, null, new Rect(0, 0, getWidth(), getHeight()), null);
         gsm.render(canvas);
     }
 
@@ -67,10 +62,6 @@ public class MainLayout extends SurfaceView implements Runnable {
 
     public void Resume() {
         canDraw = true;
-        Canvas canvas = surfaceHolder.lockCanvas();
-        width = canvas.getWidth();
-        height = canvas.getHeight();
-        surfaceHolder.unlockCanvasAndPost(canvas);
         thread = new Thread(this);
         thread.start();
     }

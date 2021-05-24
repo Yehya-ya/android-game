@@ -7,7 +7,7 @@ import android.graphics.Rect;
 
 public class Font {
 
-    private Bitmap fontSheet = null;
+    private Bitmap fontSheet;
     private Bitmap[][] FontArray;
 
     private int width, height;
@@ -21,15 +21,15 @@ public class Font {
         this.sheet_columns = fontSheet.getWidth() / width;
         this.sheet_rows = fontSheet.getHeight() / height;
 
-        loadFontArray();
+        this.loadFontArray();
     }
 
     private Bitmap getLetter(char letter) {
         int value = letter - ' ' + 0;
-        int x = value % sheet_columns;
-        int y = value / sheet_columns;
+        int column = value % this.sheet_columns;
+        int row = value / this.sheet_columns;
 
-        return FontArray[x][y];
+        return this.FontArray[row][column];
     }
 
     private Bitmap loadFont(String file) {
@@ -44,16 +44,16 @@ public class Font {
     }
 
     private void loadFontArray() {
-        FontArray = new Bitmap[sheet_columns][sheet_rows];
+        this.FontArray = new Bitmap[this.sheet_rows][this.sheet_columns];
 
-        for (int row = 0; row < sheet_rows; row++) {
-            for (int column = 0; column < sheet_columns; column++) {
-                FontArray[row][column] = setLetter(row, column);
+        for (int row = 0; row < this.sheet_rows; row++) {
+            for (int column = 0; column < this.sheet_columns; column++) {
+                this.FontArray[row][column] = this.setLetter(row, column);
             }
         }
     }
 
-    private Bitmap setLetter(int column, int row) {
+    private Bitmap setLetter(int row, int column) {
         return Bitmap.createBitmap(this.fontSheet, column * this.width, row * this.height, this.width, this.height);
     }
 

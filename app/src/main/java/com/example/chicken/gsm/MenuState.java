@@ -32,7 +32,7 @@ public class MenuState extends GameState {
         this.click = false;
         this.counter = 0;
         this.delay = 2;
-        Sprite sprite = new Sprite("move/button.png", 190, 49);
+        Sprite sprite = new Sprite("res/drawable/button.png", 190, 49);
 
         int x = (MainLayout.width / 2 - 200);
         int y = (MainLayout.height / 2 - 40);
@@ -44,12 +44,12 @@ public class MenuState extends GameState {
 
         this.image = null;
         try {
-            this.image = BitmapFactory.decodeStream(getClass().getClassLoader().getResourceAsStream("res/drawable/Img.png"));
+            this.image = BitmapFactory.decodeStream(getClass().getClassLoader().getResourceAsStream("res/drawable/img.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        if (gsm.IsResumeable()) {
+        if (gsm.isResumable()) {
             resume.setClickable(true);
             this.focus = 1;
         } else {
@@ -64,7 +64,7 @@ public class MenuState extends GameState {
             focus = 1;
         }
 
-        if (focus == 1 && !gsm.IsResumeable()) {
+        if (focus == 1 && !gsm.isResumable()) {
             focus = 2;
         }
     }
@@ -75,7 +75,7 @@ public class MenuState extends GameState {
             focus = 3;
         }
 
-        if (focus == 1 && !gsm.IsResumeable()) {
+        if (focus == 1 && !gsm.isResumable()) {
             focus = 3;
         }
     }
