@@ -1,8 +1,12 @@
 package com.example.chicken.gsm;
 
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 
+import com.example.chicken.MainLayout;
 import com.example.chicken.level.Type;
 import com.example.chicken.ui.Font;
 
@@ -15,15 +19,17 @@ public class GameStatesManager {
     private int score;
     private int level;
     private Type type;
+    private Bitmap background;
 
     public GameStatesManager() {
         this.score = 0;
         this.type = Type.moveBy;
         this.level = 1;
-        this.font = new Font("Font/font.png", 20, 20);
-        states = new ArrayList<>();
+        this.font = new Font("res/drawable/font.png", 20, 20);
+        this.background = BitmapFactory.decodeStream(getClass().getClassLoader().getResourceAsStream("res/drawable/background.png"));
+        this.states = new ArrayList<>();
 
-        states.add(new PlayState(this, font));
+        this.states.add(new PlayState(this, font));
     }
 
     public void pop(GameState s) {
@@ -76,6 +82,7 @@ public class GameStatesManager {
     }
 
     public void render(Canvas canvas) {
+        canvas.drawBitmap(this.background, null, new Rect(0, 0, MainLayout.width, MainLayout.height), null);
         for (int i = 0; i < states.size(); i++) {
             states.get(i).render(canvas);
         }
@@ -99,7 +106,7 @@ public class GameStatesManager {
         states.clear();
     }
 
-    public boolean IsResumeable() {
+    public boolean isResumable() {
         return level != 1 || type != Type.moveBy;
     }
 

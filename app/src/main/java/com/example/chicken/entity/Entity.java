@@ -17,10 +17,10 @@ public class Entity {
     protected Vector2f pos;
     protected Animation ani;
     protected int currentAnimation;
-    protected boolean up;
-    protected boolean down;
-    protected boolean left;
-    protected boolean right;
+    protected boolean up = false;
+    protected boolean down = false;
+    protected boolean left = false;
+    protected boolean right = false;
     protected boolean attack;
     protected int attackSpeed;
     protected int attackDuration;
@@ -33,11 +33,11 @@ public class Entity {
     public Entity(Sprite sprite, int width, int height) {
         this.maxSpeed = 8;
         this.sprite = sprite;
-        this.pos = new Vector2f(MainLayout.width / 2.0f - width / 2.0f, 0);
-        this.dy = maxSpeed * 2;
+        this.pos = new Vector2f(MainLayout.width / 2f - width / 2f, MainLayout.height / 2f - height / 2f);
+        this.dy = -4;
         this.dx = 0;
         this.acc = 1;
-        this.de_acc = 0.5f;
+        this.de_acc = 0f;
         bounds = new Rect((int) pos.x, (int) pos.y, (int) pos.x + width, (int) pos.y + height);
 
         ani = new Animation();
@@ -57,8 +57,7 @@ public class Entity {
     public void update() {
         animate();
         ani.update();
-        bounds.left = (int) pos.x;
-        bounds.top = (int) pos.y;
+        bounds.offsetTo((int) pos.x, (int) pos.y);
     }
 
     private void animate() {

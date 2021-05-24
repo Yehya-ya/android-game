@@ -60,7 +60,7 @@ public class PlayState extends GameState {
             e.printStackTrace();
         }
 
-        player = new Player(new Sprite("res/drawable/chicken.png", w, h), new Sprite("res/drawable/egg.png", 9, 10), (int) (w * 2 / 1.5), (int) (h * 2 / 1.5));
+        player = new Player(new Sprite("res/drawable/chicken.png", w, h), new Sprite("res/drawable/egg.png", 9, 10), (int) (w * 3), (int) (h * 3));
         lsm = new LevelStateManager(enemySprite, player, font);
     }
 

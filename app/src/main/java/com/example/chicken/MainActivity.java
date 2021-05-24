@@ -2,7 +2,9 @@ package com.example.chicken;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Point;
 import android.os.Bundle;
+import android.view.WindowManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -11,7 +13,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mainLayout = new MainLayout(this);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        Point point = new Point();
+        getWindowManager().getDefaultDisplay().getSize(point);
+        mainLayout = new MainLayout(this, point.x, point.y);
         setContentView(mainLayout);
     }
 

@@ -32,7 +32,7 @@ public class Level {
         this.level = 1;
         this.finished = false;
         this.enemy_num = 24;
-        this.stages = new Stage(enemy_sprite, new Sprite("move/coin.png", 17, 18), new Sprite("move/smoke.png", 16, 16));
+        this.stages = new Stage(enemy_sprite, new Sprite("res/drawable/coin.png", 17, 18), new Sprite("res/drawable/smoke.png", 16, 16));
         this.player = player;
 
     }
@@ -47,7 +47,7 @@ public class Level {
         this.level = level;
         this.finished = false;
         this.enemy_num = 18 + level * 6;
-        this.stages = new Stage(enemy_sprite, new Sprite("move/coin.png", 17, 18), new Sprite("move/smoke.png", 16, 16));
+        this.stages = new Stage(enemy_sprite, new Sprite("res/drawable/coin.png", 17, 18), new Sprite("res/drawable/smoke.png", 16, 16));
         this.player = player;
     }
 
